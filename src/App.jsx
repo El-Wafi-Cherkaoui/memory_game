@@ -4,13 +4,14 @@ import Card from './components/Card'
 
 function App() {
   const [data, setData] = useState([])
+  const [h_points, setH_Points] = useState(0)
   const [points, setPoints] = useState(0)
   const [clicked, setClicked] = useState([])
   let current_order = []
 
 
   useEffect(()=>{
-    fetch('https://api.giphy.com/v1/stickers/trending?api_key=q5vznX8z9Ng0FYBj5mliooagqNu7BkPI&limit=2')
+    fetch('https://api.giphy.com/v1/gifs/search?api_key=q5vznX8z9Ng0FYBj5mliooagqNu7BkPI&q=dog&limit=10')
     .then((res)=>res.json())
     .then((res)=>{setData(res.data)})
   }, [])
@@ -40,14 +41,20 @@ function App() {
     else{
       setClicked((prev)=>[...prev, card.id])
       setPoints(points + 1)
+      if (points + 1 > h_points) setH_Points(points+1)
     }    
   }
   return (
     <>
-      <h1>Points : {points}</h1>
-      {current_order.map((card_data, key)=>{
-        return <Card data={card_data} key={key} is_clicked = {add_to_clicked}/>
-      })}
+      <div className="header">
+        <h1 className='highest_points'>Highest Points : {h_points}</h1>
+        <h1 className='points'>Points : {points}</h1>
+      </div>
+      <div className="cards">
+        {current_order.map((card_data, key)=>{
+          return <Card data={card_data} key={key} is_clicked = {add_to_clicked}/>
+        })}
+      </div>
     </>
   )
 }
