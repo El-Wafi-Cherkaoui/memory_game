@@ -4,6 +4,7 @@ import Card from './components/Card'
 
 function App() {
   const [data, setData] = useState([])
+  const [points, setPoints] = useState(0)
   const [clicked, setClicked] = useState([])
   let current_order = []
 
@@ -32,14 +33,18 @@ function App() {
     current_order = new_data
   }
   function add_to_clicked(card) {
-    if(clicked.includes(card.id)) alert('lost!')
-      else{
-        setClicked((prev)=>[...prev, card.id])
-      }    
+    if(clicked.includes(card.id)) {
+      setPoints(0)
+      setClicked([])
+    }
+    else{
+      setClicked((prev)=>[...prev, card.id])
+      setPoints(points + 1)
+    }    
   }
   return (
     <>
-    
+      <h1>Points : {points}</h1>
       {current_order.map((card_data, key)=>{
         return <Card data={card_data} key={key} is_clicked = {add_to_clicked}/>
       })}
